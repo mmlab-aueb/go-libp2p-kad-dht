@@ -132,7 +132,7 @@ func handleLocalReachabilityChangedEvent(dht *IpfsDHT, e event.EvtLocalReachabil
 		target = modeServer
 	}
 
-	logger.Infof("processed event %T; performing dht mode switch", e)
+	logger.Infof("processed event %T; performing dht mode switch NFFF", e)
 
 	err := dht.setMode(target)
 	// NOTE: the mode will be printed out as a decimal.

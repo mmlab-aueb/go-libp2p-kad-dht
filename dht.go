@@ -165,6 +165,9 @@ var (
 // If the Routing Table has more than "minRTRefreshThreshold" peers, we consider a peer as a Routing Table candidate ONLY when
 // we successfully get a query response from it OR if it send us a query.
 func New(ctx context.Context, h host.Host, options ...Option) (*IpfsDHT, error) {
+	fmt.Printf("*******I am here with print*********")
+	logger.Warnf("******I am here with warning******")
+	logger.Infof("******I am here with info******")
 	var cfg dhtcfg.Config
 	if err := cfg.Apply(append([]Option{dhtcfg.Defaults}, options...)...); err != nil {
 		return nil, err
