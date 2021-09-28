@@ -148,6 +148,9 @@ type IpfsDHT struct {
 
 	// configuration variables for tests
 	testAddressUpdateProcessing bool
+
+	//***MLDHT
+	LocalNodes map[string]bool
 }
 
 // Assert that IPFS assumptions about interfaces aren't broken. These aren't a
@@ -165,9 +168,7 @@ var (
 // If the Routing Table has more than "minRTRefreshThreshold" peers, we consider a peer as a Routing Table candidate ONLY when
 // we successfully get a query response from it OR if it send us a query.
 func New(ctx context.Context, h host.Host, options ...Option) (*IpfsDHT, error) {
-	fmt.Printf("*******I am here with print*********")
-	logger.Warnf("******I am here with warning******")
-	logger.Infof("******I am here with info******")
+	logger.Infof("******MLDHT Initialized******")
 	var cfg dhtcfg.Config
 	if err := cfg.Apply(append([]Option{dhtcfg.Defaults}, options...)...); err != nil {
 		return nil, err
@@ -586,6 +587,13 @@ func (dht *IpfsDHT) rtPeerLoop(proc goprocess.Process) {
 				bootstrapCount = 0
 				timerCh = nil
 			}
+			//***MLDHT
+			logger.Infof("**Will try add %s", addReq.p)
+			_, exists := dht.LocalNodes[string(addReq.p)]
+			if exists {
+				logger.Infof("****Which is local")
+			}
+			//***/MLDHT
 			newlyAdded, err := dht.routingTable.TryAddPeer(addReq.p, addReq.queryPeer, isBootsrapping)
 			if err != nil {
 				// peer not added.
